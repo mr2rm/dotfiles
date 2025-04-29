@@ -1,0 +1,203 @@
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+" Source your .vimrc
+source ~/.vimrc
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff = 5
+
+" Do incremental searching.
+set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+" Surround plugin
+Plug 'tpope/vim-surround'
+xmap sa <Plug>VSurround
+nmap sa <Plug>YSurround
+nmap sA <Plug>Yssurround
+nmap sd <Plug>DSurround
+nmap sr <Plug>CSurround
+
+" Which-Key plugin
+set which-key
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+map gr <Action>(GotoImplementation)
+
+" ----- Settings -----
+
+" Set <space> as the leader key
+let mapleader = ' '
+let maplocalleader = ' '
+
+" Enable relative line numbers
+set number
+set relativenumber
+
+" Sync clipboard between OS and Neovim.
+set clipboard = unnamedplus
+
+" Save undo history
+set undofile
+
+" Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+set ignorecase
+set smartcase
+
+" Decrease update time
+set updatetime = 250
+
+" Decrease mapped sequence wait time
+set timeoutlen = 300
+
+" Configure how new splits should be opened
+set splitright
+set splitbelow
+
+" Minimal number of screen lines to keep above and below the cursor
+set scrolloff = 10
+
+" Set highlight on search, but clear on pressing <Esc> in normal mode
+set hlsearch
+nnoremap <Esc> :nohlsearch<CR>:action EditorEscape<CR>
+
+" Diagnostic keymaps
+nnoremap [d :action GotoPreviousError<CR>
+nnoremap ]d :action GotoNextError<CR>
+map <leader>e <Action>(ShowErrorDescription)
+map <leader>q <Action>(ActivateProblemsViewToolWindow)
+
+" Keybindings to make split navigation easier.
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+
+" ----- Keymaps -----
+
+" Move highlighted lines with auto indentation
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Append next line to the current line with space (keeps cursor position)
+nnoremap J mzJ`z
+
+" Keep cursor in the middle of the screen when scrolling
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Keep search term in the middle of the screen
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Pasting or deleting to void register
+xnoremap <leader>kp "_dP
+nnoremap <leader>kd "_d
+vnoremap <leader>kd "_d
+
+" Separate Vim clipboard and system clipboard
+" TODO: Sync clipboards
+nnoremap <leader>ky "+y
+vnoremap <leader>ky "+y
+nnoremap <leader>kY "+Y
+
+" Yank to the end of the line
+nnoremap Y y$
+
+" Select from dropdown list
+imap <C-y> <Action>(EditorChooseLookupItem)
+
+" Replace word under the cursor
+map <leader>ks <Action>(Replace)
+
+" Switch Buffers
+map <leader><leader> <Action>(Switcher)
+
+" ----- Search -----
+
+map <leader>sf <Action>(GotoFile)
+map <leader>sg <Action>(FindInPath)
+map <leader>/ <Action>(Find)
+map <leader>. <Action>(RecentFiles)
+
+" ----- File Tree -----
+
+map <leader>tt <Action>(ActivateProjectToolWindow)
+map <leader>tf <Action>(SelectInProjectView)
+
+" ----- Format -----
+
+map <leader>f <Action>(ReformatCode)
+
+" ----- AI -----
+
+" Toggle Chat (<C-S-C>)
+map <leader>aa <Action>(copilot.chat.show)
+
+" Quick Chat (<C-S-I>)
+map <leader>aq <Action>(copilot.chat.inline)
+
+" ----- Code -----
+
+" Generate actions
+map <leader>cg <Action>(Generate)
+" Refactor actions
+map <leader>car <Action>(RefactoringMenu)
+
+" Rename
+map <leader>cr <Action>(RenameElement)
+
+" Workspace Symbols
+map <leader>cs <Action>(GotoSymbol)
+
+" Document Symbols
+map <leader>cS <Action>(FileStructurePopup)
+
+" Type Definition
+map <leader>ct <Action>(GotoTypeDeclaration)
+
+" ----- Git -----
+
+" Git Menu
+map <leader>gg <Action>(Git.MainMenu)
+
+" Move on changes
+map ]h <Action>(VcsShowNextChangeMarker)
+map [h <Action>(VcsShowPrevChangeMarker)
+
+" Preview hunk inline
+map <leader>ghp <Action>(VcsShowCurrentChangeMarker)
+" Reset hunk
+map <leader>ghr <Action>(Vcs.RollbackChangedLines)
+
+" Blame buffer
+map <leader>ghB <Action>(Annotate)
+" Stage buffer
+map <leader>ghS <Action>(Git.Add)
+" Reset buffer
+map <leader>ghR <Action>(ChangesView.Revert)
+" Diff this
+map <leader>ghd <Action>(Compare.LastVersion)
