@@ -7,13 +7,14 @@ return {
       explorer = { enabled = false },
       indent = { enabled = false },
       input = { enabled = false },
-      picker = { enabled = false },
       notifier = { enabled = false },
+      picker = { enabled = false },
       quickfile = { enabled = false },
       scope = { enabled = false },
       scroll = { enabled = false },
       statuscolumn = { enabled = false },
       words = { enabled = false },
+      image = { enabled = true },
       dashboard = {
         preset = {
           pick = function(cmd, opts)
