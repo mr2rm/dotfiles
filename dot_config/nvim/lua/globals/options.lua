@@ -9,3 +9,9 @@ vim.opt.expandtab = true -- Use spaces instead of tabs
 vim.opt.softtabstop = 4 -- Size of a tab or a backspace (because of `expandtab`)
 vim.opt.shiftwidth = 4 -- Size of a level of indent
 vim.opt.breakindent = true -- Enable break indent for wrapped line
+
+-- NOTE: Code folding
+vim.opt.foldcolumn = '1'
+vim.opt.foldlevel = 99 -- UFO provider need a large value
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
