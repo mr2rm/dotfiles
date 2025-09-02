@@ -12,9 +12,14 @@ return {
       quickfile = { enabled = false },
       scope = { enabled = false },
       scroll = { enabled = false },
-      statuscolumn = { enabled = false },
       words = { enabled = false },
       image = { enabled = true },
+      statuscolumn = {
+        folds = {
+          open = true,
+          git_hl = true,
+        },
+      },
       dashboard = {
         preset = {
           pick = function(cmd, opts)
