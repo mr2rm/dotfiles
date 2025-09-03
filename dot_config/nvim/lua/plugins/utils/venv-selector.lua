@@ -11,8 +11,6 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
     },
-    -- This is the regexp branch, use this for the new version
-    branch = 'regexp',
     cmd = 'VenvSelect',
     ft = { 'python' },
     opts = {
