@@ -142,10 +142,11 @@ return {
 
       -- Find directory and focus in Nvim-tree
       -- NOTE: Needs fd to be installed (https://github.com/sharkdp/fd)
+      -- TODO: Can be deprecated
       vim.keymap.set('n', '<leader>sF', function()
         builtin.find_files {
           prompt_title = 'Find Folders',
-          find_command = { 'fd', '--type', 'directory' },
+          find_command = { 'fdfind', '--type', 'directory' },
           attach_mappings = function(prompt_bufnr, _)
             actions.select_default:replace(function()
               show_in_file_tree(prompt_bufnr)
@@ -176,7 +177,7 @@ return {
       },
       {
         -- Slightly advanced example of overriding default behavior and theme
-        '<leader>/',
+        '<leader>sb',
         function()
           -- You can pass additional configuration to Telescope to change the theme, layout, etc.
           local dropdown = require('telescope.themes').get_dropdown {
@@ -185,14 +186,14 @@ return {
           }
           require('telescope.builtin').current_buffer_fuzzy_find(dropdown)
         end,
-        desc = 'Grep Current Buffer',
+        desc = 'Grep Current [B]uffer',
       },
       { '<leader>sw', '<cmd>Telescope grep_string word_match=-w<cr>', desc = '[W]ord' },
       { '<leader>sw', '<cmd>Telescope grep_string<cr>', mode = 'v', desc = 'Selection' },
 
       -- Find Files
       { -- TODO: <leader>fR -> CWD ({ cwd = vim.uv.cwd() })
-        '<leader>.', -- <leader>sr, <leader>fr
+        '<leader>s.', -- <leader>sr, <leader>fr
         '<cmd>Telescope oldfiles<cr>', -- builtin.oldfiles
         desc = 'Recent Files',
       },
@@ -209,9 +210,9 @@ return {
         desc = '[N]eovim Files',
       },
       {
-        '<leader><leader>', -- <leader>, <leader>fb
+        '<leader>so', -- <leader>, <leader>fb
         '<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>', -- builtin.buffers
-        desc = 'Switch Buffer',
+        desc = '[O]pen Files',
       },
 
       -- Todo Comments
@@ -227,7 +228,7 @@ return {
       },
 
       -- Misc
-      { '<leader>:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
+      { '<leader>s:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
       {
         '<leader>sr', -- <leader>sR
         '<cmd>Telescope resume<cr>', -- builtin.resume
