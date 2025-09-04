@@ -1,42 +1,59 @@
 return {
-  {
-    'folke/snacks.nvim',
-    ---@type snacks.Config
-    opts = {
-      bigfile = { enabled = false },
-      explorer = { enabled = false },
-      indent = { enabled = false },
-      input = { enabled = false },
-      notifier = { enabled = false },
-      picker = { enabled = false },
-      quickfile = { enabled = false },
-      scope = { enabled = false },
-      scroll = { enabled = false },
-      words = { enabled = false },
-      image = { enabled = true },
-      statuscolumn = {
-        folds = {
-          open = true,
-          git_hl = true,
+  'folke/snacks.nvim',
+  ---@type snacks.Config
+  opts = {
+    explorer = { enabled = false },
+    notifier = { enabled = false },
+    picker = { enabled = false },
+    scope = { enabled = false },
+    scroll = { enabled = false },
+    words = { enabled = false },
+    bigfile = { -- Prevents attaching LSP and Treesitter to big files
+      enabled = true,
+    },
+    indent = { -- Indent guides and scopes
+      enabled = true,
+      animate = {
+        duration = {
+          step = 5,
+          total = 100,
         },
       },
-      dashboard = {
-        preset = {
-          pick = function(cmd, opts)
-            local telescope = require 'telescope.builtin'
-            if opts == nil then
-              opts = {}
-            end
+    },
+    quickfile = { -- Render a single file quickly before loading plugins
+      enabled = true,
+    },
+    input = { -- Better vim.ui.input
+      enabled = true,
+    },
+    image = { -- Image viewer using Kitty Graphics Protocol
+      enabled = true,
+    },
+    statuscolumn = { -- Pretty status column
+      enabled = true,
+      folds = {
+        open = true,
+        git_hl = true,
+      },
+    },
+    dashboard = { -- Beautiful declarative dashboards
+      enabled = true,
+      preset = {
+        pick = function(cmd, opts)
+          local telescope = require 'telescope.builtin'
+          if opts == nil then
+            opts = {}
+          end
 
-            if cmd == 'files' then
-              telescope.find_files(opts)
-            elseif cmd == 'live_grep' then
-              telescope.live_grep(opts)
-            elseif cmd == 'oldfiles' then
-              telescope.oldfiles(opts)
-            end
-          end,
-          header = [[
+          if cmd == 'files' then
+            telescope.find_files(opts)
+          elseif cmd == 'live_grep' then
+            telescope.live_grep(opts)
+          elseif cmd == 'oldfiles' then
+            telescope.oldfiles(opts)
+          end
+        end,
+        header = [[
                                                                     
       ████ ██████           █████      ██                     
      ███████████             █████                             
@@ -45,15 +62,88 @@ return {
    █████████ ██████████ █████████ █████ █████ ████ █████   
  ███████████ ███    ███ █████████ █████ █████ ████ █████  
 ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
-        },
-        sections = {
-          { section = 'header' },
-          { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
-          { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
-          { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
-          { section = 'startup' },
-        },
       },
+      sections = {
+        { section = 'header' },
+        { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
+        { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
+        { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
+        { section = 'startup' },
+      },
+    },
+    zen = { -- Zen mode
+      enabled = true,
+      win = {
+        width = 0,
+      },
+      toggles = {
+        dim = true,
+        git_signs = false,
+        diagnostics = false,
+        inlay_hints = false,
+        ufo = false,
+        line_number = false,
+        relative_number = false,
+        indent = false,
+        signcolumn = 'no',
+      },
+    },
+  },
+  config = function(_, opts)
+    require('snacks').setup(opts)
+
+    Snacks.toggle.new {
+      id = 'ufo',
+      name = 'Toggle UFO',
+      get = function()
+        return require('ufo').inspect()
+      end,
+      set = function(state)
+        if state == nil then
+          require('ufo').enable()
+          vim.opt.foldenable = true
+          vim.opt.foldcolumn = '1'
+        else
+          require('noice').cmd 'dismiss'
+          require('ufo').disable()
+          vim.opt.foldenable = false
+          vim.opt.foldcolumn = '0'
+        end
+      end,
+    }
+  end,
+  keys = {
+    {
+      '<leader>bd',
+      function()
+        Snacks.bufdelete()
+      end,
+      desc = '[D]elete',
+      mode = 'n',
+    },
+    {
+      '<leader>ba',
+      function()
+        Snacks.bufdelete.all()
+      end,
+      desc = 'Delete [A]ll',
+      mode = 'n',
+    },
+    {
+      '<leader>bo',
+      function()
+        Snacks.bufdelete.other()
+      end,
+      desc = 'Delete [O]thers',
+      mode = 'n',
+    },
+    {
+      '<leader>z',
+      function()
+        Snacks.zen()
+      end,
+      desc = 'Toggle [Z]en Mode',
+      mode = 'n',
     },
   },
 }
