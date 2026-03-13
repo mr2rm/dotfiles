@@ -22,7 +22,7 @@ return {
     },
     keys = {
       -- Keymap to open VenvSelector to pick a venv.
-      { '<leader>vs', '<cmd>VenvSelect<cr>', desc = '[S]elect', ft = { 'python' } },
+      { '<leader>cv', '<cmd>VenvSelect<cr>', desc = '[V]env', ft = { 'python' } },
     },
   },
 }

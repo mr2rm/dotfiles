@@ -7,17 +7,17 @@ return { -- File Tree
   },
   keys = {
     {
-      '<leader>tt',
+      '<leader>ft',
       '<cmd>NvimTreeToggle<cr>',
       desc = '[T]oggle',
     },
     {
-      '<leader>tf',
+      '<leader>ff',
       '<cmd>NvimTreeFindFile<cr>',
       desc = 'Current [F]ile',
     },
     {
-      '<leader>tb',
+      '<leader>fb',
       '<cmd>NvimTreeCollapseKeepBuffers<cr>',
       desc = '[B]uffers',
     },

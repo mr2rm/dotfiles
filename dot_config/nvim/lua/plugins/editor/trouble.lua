@@ -6,14 +6,14 @@ return {
     keys = {
       { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics' },
       { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics' },
-      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = '[S]ymbols' },
       {
         '<leader>xS',
         '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
-        desc = 'LSP references/definitions/...',
+        desc = 'LSP References/Definitions',
       },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List' },
+      { '<leader>xl', '<cmd>Trouble loclist toggle<cr>', desc = '[L]ocation List' },
+      { '<leader>xq', '<cmd>Trouble qflist toggle<cr>', desc = '[Q]uickfix List' },
       {
         '[q',
         function()
@@ -43,7 +43,7 @@ return {
         desc = 'Next Quickfix Item',
       },
 
-      -- Todo Comments
+      -- NOTE: Todo Comments
       {
         '<leader>xt',
         '<cmd>Trouble todo<cr>',
@@ -52,7 +52,7 @@ return {
       {
         '<leader>xT',
         '<cmd>Trouble todo filter = {tag = {TODO, FIX, FIXME}}<cr>',
-        desc = '[T]odo Fix List',
+        desc = 'Fix List',
       },
     },
   },

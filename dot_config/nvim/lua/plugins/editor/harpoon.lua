@@ -53,28 +53,28 @@ return {
       end
 
       -- Set keymap for listing files in Telescope
-      vim.keymap.set('n', '<leader>hl', function()
+      vim.keymap.set('n', '<leader>ml', function()
         toggle_telescope(harpoon:list())
       end, { desc = '[L]ist Files' })
     end,
     keys = function()
       local mappings = {
         {
-          '<leader>ha',
+          '<leader>ma',
           function()
             require('harpoon'):list():add()
           end,
           desc = '[A]dd File',
         },
         {
-          '<leader>hp',
+          '<leader>mp',
           function()
             require('harpoon'):list():prev()
           end,
           desc = '[P]revious File',
         },
         {
-          '<leader>hn',
+          '<leader>mn',
           function()
             require('harpoon'):list():next()
           end,
@@ -85,7 +85,7 @@ return {
       -- Add mappings for selecting files with index
       for index = 1, 4 do
         table.insert(mappings, {
-          '<leader>h' .. index,
+          '<leader>m' .. index,
           function()
             require('harpoon'):list():select(index)
           end,

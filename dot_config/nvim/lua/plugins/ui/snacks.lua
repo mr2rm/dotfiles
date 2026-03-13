@@ -3,7 +3,7 @@ return {
   ---@type snacks.Config
   opts = {
     explorer = { enabled = false },
-    notifier = { enabled = false },
+    notifier = { enabled = false, top_down = false },
     picker = { enabled = false },
     scope = { enabled = false },
     scroll = { enabled = false },
@@ -114,36 +114,39 @@ return {
   end,
   keys = {
     {
-      '<leader>bd',
+      '<leader>bdd',
       function()
         Snacks.bufdelete()
       end,
-      desc = '[D]elete',
-      mode = 'n',
+      desc = 'Current',
     },
     {
-      '<leader>ba',
+      '<leader>bda',
       function()
         Snacks.bufdelete.all()
       end,
-      desc = 'Delete [A]ll',
-      mode = 'n',
+      desc = '[A]ll',
     },
     {
-      '<leader>bo',
+      '<leader>bdo',
       function()
         Snacks.bufdelete.other()
       end,
-      desc = 'Delete [O]thers',
-      mode = 'n',
+      desc = '[O]thers',
     },
     {
-      '<leader>z',
+      '<leader>uz',
       function()
         Snacks.zen()
       end,
       desc = 'Toggle [Z]en Mode',
-      mode = 'n',
+    },
+    {
+      '<leader>bu',
+      function()
+        Snacks.picker.undo()
+      end,
+      desc = '[U]ndo History',
     },
   },
 }
