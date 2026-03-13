@@ -296,7 +296,7 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
   - `git_files`
 - [ ] Review configurations
 - [x] Search hidden and ignored files
-- [x] ~Check if realted LSP keymaps can be moved to Telescope configuration~
+- [-] ~Check if realted LSP keymaps can be moved to Telescope configuration~
 
 ### Neovim Setup
 
@@ -304,9 +304,9 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 - [x] Improve Neovim desktop launcher or delete it
 - [x] Enable hotkey in Kitty
 - [x] Configure Kitty
-- [x] ~Vexplore and Sexplore in Neovim~
+- [-] ~Vexplore and Sexplore in Neovim~
 - [x] Create a new repository
-- [ ] Move options and keymaps to `globals` module
+- [x] Move options and keymaps to `globals` module
 - [ ] Keymap for switch to another buffer
 - [x] Keep copied value in clipboard
 - [x] Enable spell checking
@@ -320,19 +320,19 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 - [x] NeoTree vs. NvimTree
 - [x] Cmdline
 - [x] Harpoon
-- [x] ~Bufferline~
+- [-] ~Bufferline~
 - [x] Lualine
 - [ ] Manage windows (resize, etc.)
 - [x] Folding
 - [ ] Auto save?
-- [x] ~Toggleterm (for Lazygit?, Lazydocker, terminal management)~
+- [-] ~Toggleterm (for Lazygit?, Lazydocker, terminal management)~
 - [x] Trouble
 - [x] CopilotChat
 - [ ] DAP (remotly)
 - [ ] Neotest (remotely)
 - [ ] Refactoring
-- [ ] Undotree (telescope-undo.nvim)
-- [ ] Customize welcome page
+- [-] ~Undotree (telescope-undo.nvim)~
+- [x] Customize welcome page
 - [x] Add dictionary to check typos
 
 ### Git
@@ -344,7 +344,7 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
   - Fugitive: well-known but in Vimscript
 - [x] Show active branch
 - [x] Configure gitsigns to have better styling
-- [ ] Configure diffview
+- [x] Configure diffview
 - [x] Open/Edit from directly from Neovim
 - [x] Close LazyGit by Esc
 - [x] Blame multiple lines / history of lines
