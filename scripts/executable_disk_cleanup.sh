@@ -15,11 +15,11 @@ printf "\nClear systemd journal logs...\n"
 sudo journalctl --vacuum-time=3d
 
 # WARNING: Close all snaps before running this
-printf "\Remove old revisions of snaps...\n"
+printf "\nRemove old revisions of snaps...\n"
 snap list --all | awk '/disabled/{print $1, $3}' |
     while read snapname revision; do
         sudo snap remove "$snapname" --revision="$revision"
     done
 
-printf "\Remove dangling docker images...\n"
-docker system prune -f
+printf "\nRemove dangling docker images...\n"
+docker system prune -af
