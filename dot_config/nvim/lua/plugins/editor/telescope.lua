@@ -71,6 +71,11 @@ return {
         return builtin.find_files { no_ignore = true, default_text = current_line }
       end
 
+      local find_all_files = function()
+        local current_line = actions_state.get_current_line()
+        return builtin.find_files { hidden = true, no_ignore = true, default_text = current_line }
+      end
+
       local open_after_tree = function(prompt_bufnr)
         vim.defer_fn(function()
           actions.select_default(prompt_bufnr)
@@ -90,9 +95,10 @@ return {
           find_files = {
             mappings = {
               i = {
-                ['<C-h>'] = find_hidden_files,
-                ['<C-g>'] = find_ignore_files,
+                ['<C-a>'] = find_all_files,
                 ['<C-f>'] = show_in_file_tree,
+                ['<C-g>'] = find_ignore_files,
+                ['<C-h>'] = find_hidden_files,
               },
             },
           },
