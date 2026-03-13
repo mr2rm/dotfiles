@@ -6,14 +6,22 @@ return {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
+      -- this file can contain specific instructions for your project
+      instructions_file = 'avante.md',
       provider = 'copilot',
       providers = {
         openai = {
-          model = 'gpt-4o', -- your desired model (or use gpt-4o, etc.)
+          model = 'gpt-4o',
+        },
+        copilot = {
+          model = 'claude-opus-4.6',
         },
       },
       windows = {
         width = 40,
+      },
+      behaviour = {
+        auto_approve_tool_permissions = false,
       },
     },
     build = 'make',
@@ -40,6 +48,7 @@ return {
             drag_and_drop = {
               insert_mode = true,
             },
+            -- required for Windows users
             use_absolute_path = true,
           },
         },
