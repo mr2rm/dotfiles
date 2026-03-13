@@ -149,9 +149,9 @@ return {
       -- Find directory and focus in Nvim-tree
       -- NOTE: Needs fd to be installed (https://github.com/sharkdp/fd)
       -- TODO: Can be deprecated
-      vim.keymap.set('n', '<leader>sF', function()
+      vim.keymap.set('n', '<leader>sd', function()
         builtin.find_files {
-          prompt_title = 'Find Folders',
+          prompt_title = 'Find Directory',
           find_command = { 'fdfind', '--type', 'directory' },
           attach_mappings = function(prompt_bufnr, _)
             actions.select_default:replace(function()
@@ -160,30 +160,34 @@ return {
             return true
           end,
         }
-      end, { desc = '[F]olders' })
+      end, { desc = '[D]irectory' })
     end,
     keys = { -- See `:help telescope.builtin`
-      -- Grep String
+      {
+        '<leader>sr', -- <leader>sR
+        '<cmd>Telescope resume<cr>', -- builtin.resume
+        desc = '[R]esume',
+      },
+
+      -- NOTE: Grep
       { -- TODO: <leader>sG -> CWD ({ root = false })
         '<leader>sg',
         '<cmd>Telescope live_grep<cr>', -- builtin.live_grep,
-        desc = '[G]rep All',
+        desc = 'Grep Files',
       },
-      {
-        -- It's also possible to pass additional configuration options.
+      { -- It's also possible to pass additional configuration options.
         --  See `:help telescope.builtin.live_grep()` for information about particular keys
-        '<leader>s/',
+        '<leader>sG/',
         function()
           require('telescope.builtin').live_grep {
             grep_open_files = true,
             prompt_title = 'Live Grep in Open Files',
           }
         end,
-        desc = 'Grep Open Files',
+        desc = 'Open Files',
       },
-      {
-        -- Slightly advanced example of overriding default behavior and theme
-        '<leader>sb',
+      { -- Slightly advanced example of overriding default behavior and theme
+        '<leader>sG.',
         function()
           -- You can pass additional configuration to Telescope to change the theme, layout, etc.
           local dropdown = require('telescope.themes').get_dropdown {
@@ -192,36 +196,49 @@ return {
           }
           require('telescope.builtin').current_buffer_fuzzy_find(dropdown)
         end,
-        desc = 'Grep Current [B]uffer',
+        desc = 'Buffer',
       },
-      { '<leader>sw', '<cmd>Telescope grep_string word_match=-w<cr>', desc = '[W]ord' },
-      { '<leader>sw', '<cmd>Telescope grep_string<cr>', mode = 'v', desc = 'Selection' },
+      { '<leader>sGw', '<cmd>Telescope grep_string word_match=-w<cr>', desc = '[W]ord' },
+      { '<leader>sGw', '<cmd>Telescope grep_string<cr>', mode = 'v', desc = '[W]ord' },
 
-      -- Find Files
-      { -- TODO: <leader>fR -> CWD ({ cwd = vim.uv.cwd() })
-        '<leader>s.', -- <leader>sr, <leader>fr
-        '<cmd>Telescope oldfiles<cr>', -- builtin.oldfiles
-        desc = 'Recent Files',
-      },
+      -- NOTE: Find Files
       {
         '<leader>sf', -- <leader><space>
         '<cmd>Telescope find_files<cr>', -- builtin.find_files,
-        desc = '[F]iles',
+        desc = 'Find Files',
       },
+      {
+        '<leader>sF/', -- <leader>, <leader>fb
+        '<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>', -- builtin.buffers
+        desc = 'Open Files',
+      },
+      { -- TODO: <leader>fR -> CWD ({ cwd = vim.uv.cwd() })
+        '<leader>sF.', -- <leader>sr, <leader>fr
+        '<cmd>Telescope oldfiles<cr>', -- builtin.oldfiles
+        desc = 'Recent Files',
+      },
+
+      -- NOTE: Neovim
       { -- Shortcut for searching your Neovim configuration files
-        '<leader>sn', -- <leader>fc
+        '<leader>snf', -- <leader>fc
         function()
           require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
         end,
-        desc = '[N]eovim Files',
+        desc = '[F]iles',
       },
       {
-        '<leader>so', -- <leader>, <leader>fb
-        '<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>', -- builtin.buffers
-        desc = '[O]pen Files',
+        '<leader>snh',
+        '<cmd>Telescope help_tags<cr>', -- builtin.help_tags
+        desc = '[H]elp Pages',
       },
+      {
+        '<leader>snk',
+        '<cmd>Telescope keymaps<cr>', -- builtin.keymaps
+        desc = '[K]eymaps',
+      },
+      { '<leader>sn:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
 
-      -- Todo Comments
+      -- NOTE: Todo Comments
       {
         '<leader>st',
         '<cmd>TodoTelescope<cr>',
@@ -230,32 +247,16 @@ return {
       {
         '<leader>sT',
         '<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>',
-        desc = '[T]odo Fix List',
+        desc = 'Fix List',
       },
 
-      -- Misc
-      { '<leader>s:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
+      -- NOTE: Diagnostics
       {
-        '<leader>sr', -- <leader>sR
-        '<cmd>Telescope resume<cr>', -- builtin.resume
-        desc = '[R]esume',
-      },
-      {
-        '<leader>sh',
-        '<cmd>Telescope help_tags<cr>', -- builtin.help_tags
-        desc = '[H]elp Pages',
-      },
-      {
-        '<leader>sk',
-        '<cmd>Telescope keymaps<cr>', -- builtin.keymaps
-        desc = '[K]eymaps',
-      },
-      { '<leader>sd', '<cmd>Telescope diagnostics bufnr=0<cr>', desc = 'Document [D]iagnostics' },
-      {
-        '<leader>sD',
+        '<leader>sx',
         '<cmd>Telescope diagnostics<cr>', -- builtin.diagnostics
-        desc = 'Workspace [D]iagnostics',
+        desc = 'Workspace Diagnostics',
       },
+      { '<leader>sX', '<cmd>Telescope diagnostics bufnr=0<cr>', desc = '[D]ocument Diagnostics' },
     },
   },
 }
