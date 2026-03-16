@@ -123,14 +123,15 @@ return {
             },
           },
           -- NOTE: This section needs some improvements
+
           lualine_y = {
             {
               'diagnostics',
               symbols = {
                 error = ' ',
                 warn = ' ',
-                info = ' ',
-                hint = ' ',
+                info = ' ',
+                hint = ' ',
               },
             },
             -- TODO: Venv selector has extension for lualine but didn't work
