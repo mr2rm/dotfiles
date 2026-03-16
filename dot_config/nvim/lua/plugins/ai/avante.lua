@@ -12,10 +12,10 @@ return {
       providers = {
         copilot = {
           -- NOTE: Defaulted to `gpt-4.1` as the best choice for everyday.
-          -- Other non-premium Copilot models, like `gpt-4o` and `gpt-5-mini`, can also
-          -- be used as defaults. Premium models, such as `claude-opus-4.6`, are subject
-          -- to Copilot monthly premium quota limits, so you should switch to them
-          -- manually only for specific tasks.
+          -- Other non-premium Copilot models (`gpt-4o` and `gpt-5-mini`) can also be
+          -- used as defaults. Premium models, such as `claude-opus-4.6`, are subject to
+          -- Copilot monthly premium quota limits, so you should switch to them manually
+          -- only for specific tasks.
           -- https://docs.github.com/en/copilot/reference/ai-models/supported-models
           model = 'gpt-4.1',
         },

@@ -16,6 +16,10 @@ return {
             markdown = true,
             help = true,
           },
+
+          -- NOTE: By default `gpt-41-copilot` model is used for inline suggestions.
+          -- https://docs.github.com/en/copilot/concepts/completions/code-suggestions#about-the-ai-model-used-for-copilot-inline-suggestions
+          -- copilot_model = 'gpt-41-copilot',
         },
       },
     },
