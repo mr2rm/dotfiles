@@ -185,8 +185,8 @@ return {
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        -- But for many setups, the LSP (`ts_ls`) will work just fine
+        -- ts_ls = {},
         --
 
         -- Lua
@@ -239,25 +239,17 @@ return {
 
         -- JavaScript/TypeScript
         ts_ls = {
-          init_options = {
-            tsserver = {
-              -- NOTE: This is the path to the TypeScript SDK installed by Yarn (PnP)
-              path = '.yarn/sdks/typescript/lib',
-            },
-          },
+          -- NOTE: https://github.com/typescript-language-server/typescript-language-server/pull/220
+          -- cmd = { 'yarn', 'exec', 'typescript-language-server', '--stdio' },
+          --
+          -- NOTE: https://github.com/typescript-language-server/typescript-language-server/blob/master/docs/configuration.md
+          -- settings = {
+          --   tsserver = {
+          --     -- Path to the TypeScript SDK installed by Yarn PnP
+          --     path = '.yarn/sdks/typescript/lib',
+          --   },
+          -- },
         },
-        -- FIXME: ESLint LSP still cannot work with Yarn PnP. On editing a file,
-        -- it will throw this error regularly:
-        --    Error running eslint: ENOENT: no such file or directory
-        -- Can be reproduced by `:lua require('lint').try_lint()`, and might be resolved
-        -- by this PR: `https://github.com/neovim/nvim-lspconfig/pull/3900`.
-        -- Until then, `eslint_d` will be used as linter and formatter.
-        -- eslint = {
-        --   settings = {
-        --     nodePath = '.yarn/sdks',
-        --     workingDirectories = { mode = 'auto' },
-        --   },
-        -- },
 
         -- Docker
         dockerls = {},
