@@ -4,9 +4,12 @@ return { -- Highlight, edit, and navigate code
   branch = 'master',
   dependencies = {
     -- Treesitter + textobjects
-    'nvim-treesitter/nvim-treesitter-textobjects',
+    {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      branch = 'master',
+    },
     -- Show your current context
-    { 'nvim-treesitter/nvim-treesitter-context', opts = { enable = true } },
+    'nvim-treesitter/nvim-treesitter-context',
   },
   build = ':TSUpdate',
   opts = {
@@ -64,10 +67,10 @@ return { -- Highlight, edit, and navigate code
     textobjects = {
       move = {
         enable = true,
-        goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer' },
-        goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
-        goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer' },
-        goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer' },
+        goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
+        goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
+        goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
+        goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
       },
     },
   },
