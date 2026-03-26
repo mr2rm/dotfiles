@@ -68,7 +68,6 @@ return { -- File Tree
         },
       },
     }
-
     -- NOTE: Disable folds and statuscolumn
     vim.api.nvim_create_autocmd('BufEnter', {
       callback = function()
