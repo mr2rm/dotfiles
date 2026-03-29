@@ -43,16 +43,61 @@ return {
   ---@type avante.Config
   opts = {
     instructions_file = 'avante.md', -- contains specific instructions for your project
-    provider = 'copilot',
+    provider = 'copilot-default',
     providers = {
       copilot = {
-        -- NOTE: Defaulted to `gpt-4.1` as the best choice for everyday.
-        -- Other non-premium Copilot models (`gpt-4o` and `gpt-5-mini`) can also be
-        -- used as defaults. Premium models, such as `claude-opus-4.6`, are subject to
-        -- Copilot monthly premium quota limits, so you should switch to them manually
-        -- only for specific tasks.
-        -- https://docs.github.com/en/copilot/reference/ai-models/supported-models
-        model = 'gpt-4.1',
+        --[[ NOTE: Defaulted to `gpt-5-mini` as the best choice for everyday usage.
+
+          Other non-premium models (`gpt-4o` and `gpt-4.1`) can also be used as default.
+          Premium models are subject to monthly premium quota limits, so you should
+          switch to them manually only for specific tasks.
+
+          https://docs.github.com/en/copilot/reference/ai-models/supported-models
+        ]]
+        model = 'gpt-5-mini',
+      },
+
+      -- NOTE: Custom Copilot providers
+      ['copilot-default'] = { -- chat, code explanation, edits, everyday debugging, general coding, writing
+        __inherited_from = 'copilot',
+        model = 'gpt-5-mini', -- reasoning, 400K context, 128K output
+        display_name = 'copilot-free/Default (gpt-5-mini)',
+        context_window = 128000,
+        timeout = 45000,
+      },
+      ['copilot-general'] = { -- second opinion, general purpose, large-context fallback, compare with reasoning-heavy answers
+        __inherited_from = 'copilot',
+        model = 'gpt-4.1', -- non-reasoning, low-latency, 1M context, 32K output
+        display_name = 'copilot-free/General (gpt-4.1)',
+        context_window = 128000,
+      },
+      ['copilot-explore'] = { -- repo exploration, agentic workflows, codebase search, file discovery
+        __inherited_from = 'copilot',
+        model = 'gpt-5.4-mini', -- reasoning, 400K context, 128K output
+        display_name = 'copilot-premium/Explore (gpt-5.4-mini) [x0.33]',
+        context_window = 128000,
+        timeout = 45000,
+      },
+      ['copilot-build'] = { -- implementing features, writing tests, debugging, refactors, code reviews, multi-file changes
+        __inherited_from = 'copilot',
+        model = 'gpt-5.3-codex', -- reasoning, 400K context, 128K output
+        display_name = 'copilot-premium/Build (gpt-5.3-codex) [x1]',
+        context_window = 128000,
+        timeout = 60000,
+      },
+      ['copilot-reason'] = { -- hard debugging, design tradeoffs, architecture planning, cross-file root-cause analysis
+        __inherited_from = 'copilot',
+        model = 'claude-sonnet-4.6', -- reasoning, 1M context, 128K output
+        display_name = 'copilot-premium/Reason (claude-sonnet-4.6) [x1]',
+        context_window = 128000,
+        timeout = 75000,
+      },
+      ['copilot-strong'] = { -- toughest analysis, highest-capability escalation path, last resort when stuck
+        __inherited_from = 'copilot',
+        model = 'claude-opus-4.6', -- reasoning, 1M context, 128K output
+        display_name = 'copilot-premium/Strong (claude-opus-4.6) [x3]',
+        context_window = 128000,
+        timeout = 90000,
       },
     },
     windows = {
