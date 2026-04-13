@@ -11,4 +11,9 @@ utils.lsp_mapping = function(keys, func, desc)
   return { keys, func, desc = 'LSP: ' .. desc, icon = '' }
 end
 
+utils.is_yarn_pnp = function()
+  local root_dir = vim.fn.getcwd()
+  return vim.uv.fs_stat(root_dir .. '/.pnp.cjs') or vim.uv.fs_stat(root_dir .. '/.pnp.js')
+end
+
 return utils

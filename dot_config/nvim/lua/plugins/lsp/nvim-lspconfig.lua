@@ -268,17 +268,26 @@ return {
 
         -- JavaScript/TypeScript
         ts_ls = {
-          -- NOTE: https://github.com/typescript-language-server/typescript-language-server/pull/220
-          -- cmd = { 'yarn', 'exec', 'typescript-language-server', '--stdio' },
-          --
           -- NOTE: https://github.com/typescript-language-server/typescript-language-server/blob/master/docs/configuration.md
           -- settings = {
           --   tsserver = {
-          --     -- Path to the TypeScript SDK installed by Yarn PnP
-          --     path = '.yarn/sdks/typescript/lib',
+          --     path = '.yarn/sdks/typescript/lib', -- Path to the TypeScript SDK installed by Yarn PnP
           --   },
           -- },
         },
+        -- FIXME: Server is loaded and recognizes Yarn SDK, but diagnostics, formatting
+        -- and code actions are not available. In some cases, on saving a file, the
+        -- server time outs (https://github.com/neovim/nvim-lspconfig/issues/4369)
+        -- eslint = {
+        --   settings = {
+        --     nodePath = '.yarn/sdks',
+        --     -- workingDirectory = { mode = 'location' },
+        --     -- validate = 'on',
+        --     -- run = 'onType',
+        --     -- format = true,
+        --     -- debug = true,
+        --   },
+        -- },
 
         -- Docker
         dockerls = {},
@@ -366,7 +375,6 @@ return {
         'markdownlint', -- Linter/Formatter for Markdown
         'prettier', -- Formatter for YAML, Markdown, JSON, HTML, CSS, JS, and etc.
         'clang-format', -- Formatter for C/C++, Java, JS, JSON, Protobuf, and etc.
-        'eslint_d', -- Linter for JavaScript/TypeScript
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

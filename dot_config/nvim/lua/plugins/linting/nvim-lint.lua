@@ -3,32 +3,23 @@ return { -- Linting
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lint = require 'lint'
+    local utils = require 'utils'
 
-    -- Check if Yarn PnP environment is active before configuring
-    if vim.fn.executable 'yarn' == 1 and vim.fn.systemlist('yarn --version')[1] and vim.fn.systemlist('yarn config get nodeLinker')[1] == 'pnp' then
-      -- Run "yarn eslint" so the Yarn PnP loader is active
-      vim.diagnostic.config({ virtual_text = true }, lint.get_namespace 'eslint_d')
-      local eslint_d = lint.linters.eslint_d
-      eslint_d.cmd = 'yarn'
-      eslint_d.args = {
-        'exec',
-        'eslint',
-        '--format',
-        'json',
-        '--stdin',
-        '--stdin-filename',
-        function()
-          return vim.api.nvim_buf_get_name(0)
-        end,
-      }
+    -- Support Yarn2 (PnP) projects
+    if utils.is_yarn_pnp() then
+      local eslint = lint.linters.eslint
+      eslint.cmd = 'yarn'
+      eslint.args = { 'exec', 'eslint', unpack(eslint.args) }
     end
 
     lint.linters_by_ft = {
       -- TypeScript/JavaScript
-      javascript = { 'eslint_d' },
-      javascriptreact = { 'eslint_d' },
-      typescript = { 'eslint_d' },
-      typescriptreact = { 'eslint_d' },
+      -- NOTE: For non-PnP environments, `eslint` executable should be installed globally or in the project.
+      -- Alternatively, you can use `eslint_d` for faster linting which can be installed using Mason.
+      javascript = { 'eslint' },
+      javascriptreact = { 'eslint' },
+      typescript = { 'eslint' },
+      typescriptreact = { 'eslint' },
 
       -- Markdown
       markdown = { 'markdownlint' },
