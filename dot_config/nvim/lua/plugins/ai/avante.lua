@@ -71,6 +71,13 @@ return {
         display_name = 'copilot-free/General (gpt-4.1)',
         context_window = 128000,
       },
+      ['copilot-default'] = { -- chat, code explanation, edits, everyday debugging, general coding, writing
+        __inherited_from = 'copilot',
+        model = 'gpt-5-mini', -- reasoning, 400K context, 128K output
+        display_name = 'copilot-free/Default (gpt-5-mini)',
+        context_window = 128000,
+        timeout = 45000,
+      },
       ['copilot-explore'] = { -- repo exploration, agentic workflows, codebase search, file discovery
         __inherited_from = 'copilot',
         model = 'gpt-5.4-mini', -- reasoning, 400K context, 128K output
@@ -125,23 +132,38 @@ return {
     selector = {
       exclude_auto_select = { 'NvimTree' },
     },
-    -- TODO: Disable built-in tools to rely on Neovim server and preventing duplication
-    -- https://github.com/yetone/avante.nvim/blob/main/lua/avante/llm_tools/init.lua
+    -- -- TODO: Disable built-in tools to rely on Neovim server and preventing duplication
+    -- -- https://github.com/yetone/avante.nvim/blob/main/lua/avante/llm_tools/init.lua
     -- disabled_tools = {
-    --   'bash',
-    --   'ls',
+    --   'dispatch_agent',
     --   'glob',
-    --   'view',
-    --   'edit_file',
-    --   'replace_in_file',
+    --   'run_python',
+    --   'git_diff',
+    --   'git_commit',
+    --   'ls',
+    --   'grep',
+    --   'delete_tool_use_messages',
+    --   'read_todos',
+    --   'write_todos',
+    --   'read_file_toplevel_symbols',
     --   'str_replace',
-    --   'insert',
-    --   'create',
+    --   'view',
     --   'write_to_file',
+    --   'insert',
+    --   'undo_edit',
     --   'move_path',
     --   'copy_path',
     --   'delete_path',
     --   'create_dir',
+    --   'think',
+    --   'get_diagnostics',
+    --   'bash',
+    --   'attempt_completion',
+    --   'web_search',
+    --   'fetch',
+    --   'read_definitions',
+    --   'add_file_to_context',
+    --   'remove_file_from_context',
     -- },
   },
   keys = {
