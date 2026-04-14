@@ -71,13 +71,6 @@ return {
         display_name = 'copilot-free/General (gpt-4.1)',
         context_window = 128000,
       },
-      ['copilot-default'] = { -- chat, code explanation, edits, everyday debugging, general coding, writing
-        __inherited_from = 'copilot',
-        model = 'gpt-5-mini', -- reasoning, 400K context, 128K output
-        display_name = 'copilot-free/Default (gpt-5-mini)',
-        context_window = 128000,
-        timeout = 45000,
-      },
       ['copilot-explore'] = { -- repo exploration, agentic workflows, codebase search, file discovery
         __inherited_from = 'copilot',
         model = 'gpt-5.4-mini', -- reasoning, 400K context, 128K output
@@ -99,16 +92,22 @@ return {
         context_window = 128000,
         timeout = 75000,
       },
-      ['copilot-strong'] = { -- toughest analysis, highest-capability escalation path, last resort when stuck
+      ['copilot-elite'] = { -- toughest analysis, highest-capability escalation path, last resort when stuck
         __inherited_from = 'copilot',
         model = 'claude-opus-4.6', -- reasoning, 1M context, 128K output
-        display_name = 'copilot-premium/Strong (claude-opus-4.6) [x3]',
+        display_name = 'copilot-premium/Elite (claude-opus-4.6) [x3]',
         context_window = 128000,
         timeout = 90000,
       },
     },
     windows = {
       width = 40,
+      input = {
+        height = 9,
+      },
+      edit = {
+        border = 'rounded',
+      },
     },
     behaviour = {
       auto_approve_tool_permissions = false,
