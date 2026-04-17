@@ -165,6 +165,11 @@ return {
     --   'remove_file_from_context',
     -- },
   },
+  config = function(_, opts)
+    require('avante').setup(opts)
+
+    vim.api.nvim_set_hl(0, 'AvanteSidebarWinSeparator', { link = 'WinSeparator' })
+  end,
   keys = {
     {
       '<leader>a+',
