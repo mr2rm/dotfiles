@@ -1,6 +1,5 @@
-return {
+return { -- Debugging support (requires language specific adapters)
   'mfussenegger/nvim-dap',
-  desc = 'Debugging support',
   dependencies = {
     { -- Creates a beautiful debugger UI
       'rcarriga/nvim-dap-ui',

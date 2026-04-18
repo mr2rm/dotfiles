@@ -367,6 +367,7 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+      -- TODO: Move linter and formatter installations to their respective plugin configs and only keep LSPs installation here
       vim.list_extend(ensure_installed, {
         -- NOTE: Configuration for Java is handled by nvim-jdtls
         'jdtls', -- Java language server
