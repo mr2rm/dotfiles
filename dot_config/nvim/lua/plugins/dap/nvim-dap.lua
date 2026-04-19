@@ -35,7 +35,29 @@ return { -- Debugging support (requires language specific adapters)
 
       -- You can provide additional configuration to the handlers,
       -- see mason-nvim-dap README for more information
-      handlers = {},
+      handlers = {
+        python = function()
+          -- NOTE: Debugpy includes a debugpy-adapter executable to use in place of the python executable.
+          require('dap-python').setup 'debugpy-adapter'
+
+          -- NOTE: Add path mappings to support Docker
+          for _, config in ipairs(dap.configurations.python) do
+            if config.name == 'attach' then
+              config.pathMappings = function()
+                local remote = vim.fn.input 'Remote root [.]: '
+                remote = remote ~= '' and remote or '.'
+                return {
+                  {
+                    localRoot = vim.fn.getcwd(),
+                    remoteRoot = remote,
+                  },
+                }
+              end
+              break
+            end
+          end
+        end,
+      },
 
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
@@ -65,9 +87,6 @@ return { -- Debugging support (requires language specific adapters)
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- NOTE: Debugpy includes a debugpy-adapter executable to use in place of the python executable.
-    require('dap-python').setup 'debugpy-adapter'
   end,
   keys = {
     {
