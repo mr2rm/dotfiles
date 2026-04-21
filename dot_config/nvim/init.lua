@@ -312,6 +312,7 @@ require('lazy').setup({
   { import = 'plugins.linting' },
   { import = 'plugins.lsp' },
   { import = 'plugins.misc' },
+  { import = 'plugins.test' },
   { import = 'plugins.treesitter' },
   { import = 'plugins.ui' },
   { import = 'plugins.utils' },
