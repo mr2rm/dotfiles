@@ -310,6 +310,9 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 - [ ] Keymap for switch to another buffer
 - [x] Keep copied value in clipboard
 - [x] Enable spell checking
+- [ ] Undefined types in the configurations (e.g. `vim`)
+- [ ] Nested tables of Lazy plugins
+- [ ] Use Lazy `desc` attribute rather than comments
 
 ### Plugins
 
@@ -328,12 +331,13 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 - [-] ~Toggleterm (for Lazygit?, Lazydocker, terminal management)~
 - [x] Trouble
 - [x] CopilotChat
-- [ ] DAP (remotly)
 - [ ] Neotest (remotely)
 - [ ] Refactoring
 - [-] ~Undotree (telescope-undo.nvim)~
 - [x] Customize welcome page
 - [x] Add dictionary to check typos
+- [ ] Remote development inside container (https://github.com/amitds1997/remote-nvim.nvim)
+- [ ] lazydev.nvim (replaces neodev.nvim)
 
 ### Git
 
@@ -362,3 +366,40 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 
 - [ ] Resolve conflicts and errors (mostly in mini plugins)
 - [x] Add icons to keymaps
+
+### Snacks
+
+- [ ] Review which plugins can be replaced
+
+### Avante
+
+- [ ] ACP configuration for Claude Code
+- [ ] Create project instructions
+- [ ] Configure global rules (https://github.com/yetone/avante.nvim/wiki#custom-avanterules)
+- [ ] Define project rules
+- [ ] Disable unnecessary built-in tools and use MCP instead
+- [ ] Add [SKILLS](https://skills.sh/) (https://github.com/yetone/avante.nvim/issues/2979, https://github.com/yetone/avante.nvim/issues/2990)
+- [ ] Create custom shortcuts/prompts for common tasks (https://github.com/yetone/avante.nvim/wiki/Recipe-and-Tricks)
+- [x] Enable separators like nvim-dap-ui (https://github.com/yetone/avante.nvim/issues/1797)
+- [ ] Copy from clipboard (https://github.com/yetone/avante.nvim/wiki#clipboard)
+
+### DAP
+
+- [x] Improve keymaps
+- [x] Compare with LazyVim
+- [x] Python: configure DAP
+- [x] Python: run debugger remotely in the container
+- [ ] Python: set keymaps (https://github.com/mfussenegger/nvim-dap-python#mappings)
+- [ ] Python: custom test runner? (e.g. inside container)
+- [ ] Javascript: configure DAP
+
+### MCPHub
+
+- [ ] Enable other MCPs
+- [ ] Version control MCP configurations
+
+### Neotest
+
+- [ ] Run tests inside the container using `run_tests.sh`
+- [ ] Debug test inside the container created by `run_tests.sh`
+- [x] `test_class()` / `test_method()` of `nvim-dap-python` or dap strategy?
