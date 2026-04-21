@@ -28,6 +28,9 @@ return { -- Debugging support (requires language specific adapters)
 
     require('nvim-dap-virtual-text').setup()
 
+    -- NOTE: Debugpy includes a debugpy-adapter executable to use in place of the python executable.
+    require('dap-python').setup 'debugpy-adapter'
+
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
@@ -37,9 +40,6 @@ return { -- Debugging support (requires language specific adapters)
       -- see mason-nvim-dap README for more information
       handlers = {
         python = function()
-          -- NOTE: Debugpy includes a debugpy-adapter executable to use in place of the python executable.
-          require('dap-python').setup 'debugpy-adapter'
-
           -- NOTE: Add path mappings to support Docker
           for _, config in ipairs(dap.configurations.python) do
             if config.name == 'attach' then
@@ -123,7 +123,7 @@ return { -- Debugging support (requires language specific adapters)
       function()
         require('dap').continue()
       end,
-      desc = '[C]ontinue / Run',
+      desc = '[C]ontinue/Run',
     },
     {
       '<leader>dC',
@@ -181,21 +181,13 @@ return { -- Debugging support (requires language specific adapters)
       end,
       desc = 'Step [O]ver',
     },
-    -- TODO: Are these useful?
-    -- {
-    --   '<leader>dP',
-    --   function()
-    --     require('dap').pause()
-    --   end,
-    --   desc = '[P]ause',
-    -- },
-    -- {
-    --   '<leader>ds',
-    --   function()
-    --     require('dap').session()
-    --   end,
-    --   desc = '[S]ession',
-    -- },
+    {
+      '<leader>dP',
+      function()
+        require('dap').pause()
+      end,
+      desc = '[P]ause',
+    },
     {
       '<leader>dT',
       function()
