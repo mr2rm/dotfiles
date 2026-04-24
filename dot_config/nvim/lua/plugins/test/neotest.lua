@@ -8,6 +8,7 @@ return {
 
     -- Add your own test adapters
     'nvim-neotest/neotest-python',
+    'marilari88/neotest-vitest',
   },
   opts = {
     floating = {
@@ -64,7 +65,11 @@ return {
     end
 
     opts.adapters = {
+      -- FIXME: `neotest-python` doesn't support running tests in the Docker container:
+      --  https://github.com/nvim-neotest/neotest-python/issues/71
       require 'neotest-python',
+      -- FIXME: `neotest-vitest` is not working properly with monorepo and Yarn workspaces
+      require 'neotest-vitest',
     }
 
     require('neotest').setup(opts)
@@ -146,6 +151,23 @@ return {
         require('neotest').watch.toggle(vim.fn.expand '%')
       end,
       desc = 'Toggle Watch',
+    },
+    {
+      '<leader>ty',
+      function()
+        local tree = require('neotest').run.get_tree_from_args {}
+        if not tree then
+          vim.notify('No test found under cursor', vim.log.levels.WARN)
+          return
+        end
+
+        local id = tree:data().id
+        local prefix = vim.fn.getcwd() .. package.config:sub(1, 1)
+        local test_id = id:sub(#prefix + 1)
+        vim.fn.setreg('+', test_id)
+        vim.notify('Copied ' .. test_id .. ' to clipboard!')
+      end,
+      desc = '[Y]ank Test ID',
     },
   },
 }

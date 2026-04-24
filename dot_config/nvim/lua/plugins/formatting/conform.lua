@@ -19,7 +19,7 @@ return { -- Autoformat
       -- languages here or re-enable it for the disabled ones.
       local disable_filetypes = { c = true, cpp = true }
       return {
-        timeout_ms = 3000, -- just because of `eslint`
+        timeout_ms = 5000, -- just because of `eslint`
         lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
       }
     end,
