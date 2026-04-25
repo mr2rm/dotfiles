@@ -1,3 +1,31 @@
+---@class ComposeArgs
+---@field project_name string Docker compose project name
+---@field compose_file string Path to the docker compose file
+---@field service_name string Name of the service to run the command in
+---@field command string Command to run inside the container
+
+--- Create a docker compose command for running Python inside a service container.
+---@param root string Path to the working directory inside the container
+---@param args ComposeArgs Docker compose arguments
+---@return string[] Array of command arguments usable in neotest-python adapter
+local function get_python_compose_command(root, args)
+  local command = vim.split(args.command, '%s+')
+  return {
+    'docker',
+    'compose',
+    '-p',
+    args.project_name,
+    '-f',
+    args.compose_file,
+    'exec',
+    '-T',
+    '-w',
+    root,
+    args.service_name,
+    unpack(command),
+  }
+end
+
 return {
   'nvim-neotest/neotest',
   dependencies = {
@@ -64,10 +92,28 @@ return {
       end
     end
 
+    ---@type ComposeArgs
+    local compose_args
+    if vim.env.NEOTEST_RUN_MODE == 'compose' then
+      compose_args = {
+        project_name = vim.env.NEOTEST_COMPOSE_PROJECT_NAME,
+        compose_file = vim.env.NEOTEST_COMPOSE_FILE,
+        service_name = vim.env.NEOTEST_COMPOSE_SERVICE_NAME,
+        command = vim.env.NEOTEST_COMPOSE_COMMAND,
+      }
+    end
+
     opts.adapters = {
-      -- FIXME: `neotest-python` doesn't support running tests in the Docker container:
-      --  https://github.com/nvim-neotest/neotest-python/issues/71
-      require 'neotest-python',
+      require 'neotest-python' {
+        python = function(root)
+          -- FIXME: neotest-python doesn't support running tests in the Docker container:
+          -- https://github.com/nvim-neotest/neotest-python/issues/71
+          if compose_args then
+            return get_python_compose_command(root, compose_args)
+          end
+          return require('neotest-python.base').get_python_command(root)
+        end,
+      },
       -- FIXME: `neotest-vitest` is not working properly with monorepo and Yarn workspaces
       require 'neotest-vitest',
     }
