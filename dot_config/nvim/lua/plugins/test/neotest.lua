@@ -26,6 +26,35 @@ local function get_python_compose_command(root, args)
   }
 end
 
+--- Copied from neotest-vitest source code (not exported) to add support for monorepo with Yarn PnP:
+--- https://github.com/marilari88/neotest-vitest/blob/f01addc6f07b79ef1be5f4297eafbee9e0959018/lua/neotest-vitest/init.lua#L176
+---@param path string
+---@return string
+local function getVitestCommand(path)
+  local util = require 'neotest-vitest.util'
+  local rootPath = util.find_node_modules_ancestor(path)
+  local vitestBinary = util.path.join(rootPath, 'node_modules', '.bin', 'vitest')
+
+  if util.path.exists(vitestBinary) then
+    return vitestBinary
+  end
+
+  local gitRootPath = util.find_git_ancestor(path)
+  if gitRootPath then
+    vitestBinary = util.path.join(gitRootPath, 'node_modules', '.bin', 'vitest')
+    if util.path.exists(vitestBinary) then
+      return vitestBinary
+    end
+  end
+
+  -- NOTE: This is a workaround to support monorepo with Yarn workspaces and SDK (Yarn PnP)
+  if require('utils').is_yarn_pnp(gitRootPath) then
+    return 'yarn exec vitest'
+  end
+
+  return 'vitest'
+end
+
 return {
   'nvim-neotest/neotest',
   dependencies = {
@@ -105,17 +134,25 @@ return {
 
     opts.adapters = {
       require 'neotest-python' {
+        -- FIXME: neotest-python doesn't support running tests in the Docker container:
+        -- https://github.com/nvim-neotest/neotest-python/issues/71
         python = function(root)
-          -- FIXME: neotest-python doesn't support running tests in the Docker container:
-          -- https://github.com/nvim-neotest/neotest-python/issues/71
           if compose_args then
+            if not compose_args.command then
+              compose_args.command = 'python'
+            end
             return get_python_compose_command(root, compose_args)
           end
+
           return require('neotest-python.base').get_python_command(root)
         end,
       },
-      -- FIXME: `neotest-vitest` is not working properly with monorepo and Yarn workspaces
-      require 'neotest-vitest',
+      require 'neotest-vitest' {
+        -- FIXME: neotest-vitest is not working properly with monorepo and Yarn workspaces
+        vitestCommand = function(path)
+          return getVitestCommand(path)
+        end,
+      },
     }
 
     require('neotest').setup(opts)
@@ -126,7 +163,7 @@ return {
       function()
         require('neotest').run.attach()
       end,
-      desc = 'Attach to Test',
+      desc = '[A]ttach to Test',
     },
     {
       '<leader>tt',
@@ -140,63 +177,63 @@ return {
       function()
         require('neotest').run.run(vim.uv.cwd())
       end,
-      desc = 'Run All Test Files',
+      desc = 'Run All [T]est Files',
     },
     {
       '<leader>tr',
       function()
         require('neotest').run.run()
       end,
-      desc = 'Run Nearest',
+      desc = '[R]un Nearest',
     },
     {
       '<leader>td',
       function()
         require('neotest').run.run { strategy = 'dap' }
       end,
-      desc = 'Debug Nearest',
+      desc = '[D]ebug Nearest',
     },
     {
       '<leader>tl',
       function()
         require('neotest').run.run_last()
       end,
-      desc = 'Run Last',
+      desc = 'Run [L]ast',
     },
     {
       '<leader>ts',
       function()
         require('neotest').summary.toggle()
       end,
-      desc = 'Toggle Summary',
+      desc = 'Toggle [S]ummary',
     },
     {
       '<leader>to',
       function()
         require('neotest').output.open { enter = true, auto_close = true }
       end,
-      desc = 'Show Output',
+      desc = 'Show [O]utput',
     },
     {
       '<leader>tO',
       function()
         require('neotest').output_panel.toggle()
       end,
-      desc = 'Toggle Output Panel',
+      desc = 'Toggle [O]utput Panel',
     },
     {
       '<leader>tS',
       function()
         require('neotest').run.stop()
       end,
-      desc = 'Stop',
+      desc = '[S]top',
     },
     {
       '<leader>tw',
       function()
         require('neotest').watch.toggle(vim.fn.expand '%')
       end,
-      desc = 'Toggle Watch',
+      desc = 'Toggle [W]atch',
     },
     {
       '<leader>ty',
