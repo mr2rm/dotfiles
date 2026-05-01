@@ -1,60 +1,37 @@
+---@param buf integer
+---@param language string
+local function treesitter_try_attach(buf, language)
+  -- Check if parser exists and load it
+  if not vim.treesitter.language.add(language) then
+    return
+  end
+
+  -- Enables syntax highlighting and other treesitter features
+  vim.treesitter.start(buf, language)
+
+  -- Enables treesitter based folds
+  -- For more info on folds see `:help folds`
+  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+  vim.wo.foldmethod = 'expr'
+
+  -- Check if treesitter indentation is available for this language, and if so enable it
+  -- In case there is no indent query, the indentexpr will fallback to the vim's built in one
+  local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
+  if has_indent_query then
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end
+end
+
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  -- NOTE: Supported up to Neovim 0.12 (use `main` branch for Neovim 0.12+)
-  branch = 'master',
+  branch = 'main',
+  lazy = false,
   dependencies = {
-    -- Treesitter + textobjects
-    {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      branch = 'master',
-    },
-    -- Show your current context
-    'nvim-treesitter/nvim-treesitter-context',
+    'nvim-treesitter/nvim-treesitter-textobjects', -- Treesitter + textobjects
+    'nvim-treesitter/nvim-treesitter-context', -- Show your current context
   },
   build = ':TSUpdate',
   opts = {
-    ensure_installed = {
-      'bash',
-      'c',
-      'cmake',
-      'cpp',
-      'css',
-      'dockerfile',
-      'dot',
-      'gitignore',
-      'html',
-      'ini',
-      'java',
-      'javascript',
-      'jsdoc',
-      'json',
-      'lua',
-      'luadoc',
-      'make',
-      'markdown',
-      'markdown_inline',
-      'pem',
-      'python',
-      'regex',
-      'sql',
-      'toml',
-      'tsx',
-      'typescript',
-      'vim',
-      'vimdoc',
-      'xml',
-      'yaml',
-    },
-    -- Autoinstall languages that are not installed
-    auto_install = true,
-    highlight = {
-      enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      additional_vim_regex_highlighting = { 'ruby' },
-    },
-    indent = { enable = true, disable = { 'ruby' } },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -75,9 +52,68 @@ return { -- Highlight, edit, and navigate code
     },
   },
   config = function(_, opts)
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
+    require('nvim-treesitter').setup(opts)
 
-    ---@diagnostic disable-next-line: missing-fields
-    require('nvim-treesitter.configs').setup(opts)
+    -- Ensure basic parser are installed
+    local ensure_installed = {
+      'bash',
+      'c',
+      'cmake',
+      'cpp',
+      'diff',
+      'dockerfile',
+      'dot',
+      'gitignore',
+      'html',
+      'java',
+      'javascript',
+      'jsdoc',
+      'json',
+      'lua',
+      'luadoc',
+      'luap',
+      'make',
+      'markdown',
+      'markdown_inline',
+      'printf',
+      'python',
+      'query',
+      'regex',
+      'sql',
+      'toml',
+      'tsx',
+      'typescript',
+      'vim',
+      'vimdoc',
+      'xml',
+      'yaml',
+    }
+    require('nvim-treesitter').install(ensure_installed)
+
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        local buf, filetype = args.buf, args.match
+        local language = vim.treesitter.language.get_lang(filetype)
+        if not language then
+          return
+        end
+
+        local available_parsers = require('nvim-treesitter').get_available()
+        local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
+        if vim.tbl_contains(installed_parsers, language) then
+          -- Enable the parser if it is installed
+          treesitter_try_attach(buf, language)
+        elseif vim.tbl_contains(available_parsers, language) then
+          -- If a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
+          require('nvim-treesitter').install(language):await(function()
+            treesitter_try_attach(buf, language)
+          end)
+        else
+          -- Try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+          treesitter_try_attach(buf, language)
+        end
+      end,
+    })
   end,
 }
