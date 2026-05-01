@@ -14,6 +14,7 @@ return { -- Show pending keybinds
       { '<leader>k', group = '[K]eymaps', icon = { icon = '󰌌' } },
       { '<leader>m', group = '[M]arks', icon = { icon = '󱡀' } },
       { '<leader>n', group = '[N]otifications', icon = { icon = '󰈸' } },
+      { '<leader>r', group = '[R]un', icon = { icon = '' } },
       { '<leader>s', group = '[S]earch', icon = { icon = '' } },
       { '<leader>sF', group = '[F]ile' },
       { '<leader>sG', group = '[G]rep' },

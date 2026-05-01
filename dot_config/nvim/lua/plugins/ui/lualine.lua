@@ -139,6 +139,7 @@ return {
               hint = ' ',
             },
           },
+          'overseer',
           'venv-selector',
           {
             function()
