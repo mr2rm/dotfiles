@@ -1,6 +1,5 @@
 return {
   'folke/noice.nvim',
-  tag = 'stable', -- Fixes startup error: `vim.notify` has been overwritten by another plugin?
   event = 'VeryLazy',
   opts = {
     lsp = {
