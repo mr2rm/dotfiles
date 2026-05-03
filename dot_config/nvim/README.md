@@ -337,7 +337,7 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 - [x] Customize welcome page
 - [x] Add dictionary to check typos
 - [ ] Remote development inside container (https://github.com/amitds1997/remote-nvim.nvim)
-- [ ] lazydev.nvim (replaces neodev.nvim)
+- [x] lazydev.nvim (replaces neodev.nvim)
 
 ### Git
 
