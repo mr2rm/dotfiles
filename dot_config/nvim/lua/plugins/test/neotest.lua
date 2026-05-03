@@ -124,6 +124,10 @@ return {
     ---@type ComposeArgs
     local compose_args
     if vim.env.NEOTEST_RUN_MODE == 'compose' then
+      -- NOTE: These mounts are required to run neotest inside the container and persist test results and cache between runs:
+      -- ${HOME}/.local/share/nvim:${HOME}/.local/share/nvim:ro
+      -- /tmp/nvim.${USER}:/tmp/nvim.${USER}
+
       compose_args = {
         project_name = vim.env.NEOTEST_COMPOSE_PROJECT_NAME,
         compose_file = vim.env.NEOTEST_COMPOSE_FILE,

@@ -1,4 +1,4 @@
-return {
+return { -- Task runner
   'stevearc/overseer.nvim',
   lazy = false, -- plugin is self-lazy-loading
   cmd = {

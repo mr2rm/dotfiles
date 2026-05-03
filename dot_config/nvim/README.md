@@ -400,6 +400,6 @@ sudo dnf install -y gcc make git ripgrep fd-find neovim
 
 ### Neotest
 
-- [ ] Run tests inside the container using `run_tests.sh`
+- [x] Run tests inside the container using `run_tests.sh`
 - [ ] Debug test inside the container created by `run_tests.sh`
 - [x] `test_class()` / `test_method()` of `nvim-dap-python` or dap strategy?
