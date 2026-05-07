@@ -22,7 +22,7 @@ local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 end
 
 local function avante_provider()
-  avante_config = require 'avante.config'
+  local avante_config = require 'avante.config'
   if not avante_config.provider then
     return '󰚩 -'
   end
@@ -72,6 +72,16 @@ return {
   end,
   opts = function()
     vim.o.laststatus = vim.g.lualine_laststatus
+    local trouble_symbols = require('trouble').statusline {
+      mode = 'lsp_document_symbols',
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = '{kind_icon}{symbol.name:Normal}',
+      -- The following line is needed to fix the background color
+      -- Set it to the lualine section you want to use
+      hl_group = 'lualine_c_normal',
+    }
 
     return {
       options = { theme = 'tokyonight', globalstatus = true },
@@ -102,6 +112,12 @@ return {
         lualine_c = {
           { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 }, fmt = trunc(nil, 20, 100, false) },
           { 'filename', fmt = trunc(nil, 20, 100, false) },
+          {
+            trouble_symbols.get,
+            cond = function()
+              return vim.b.trouble_lualine ~= false and trouble_symbols.has()
+            end,
+          },
         },
         lualine_x = {
           {
@@ -111,7 +127,9 @@ return {
             cond = function()
               return package.loaded['noice'] and require('noice').api.status.command.has()
             end,
-            color = { fg = '#ff9e64' },
+            color = function()
+              return { fg = Snacks.util.color 'Statement' }
+            end,
           },
           {
             function()
@@ -120,11 +138,27 @@ return {
             cond = function()
               return package.loaded['noice'] and require('noice').api.status.mode.has()
             end,
-            color = { fg = '#ff9e64' },
+            color = function()
+              return { fg = Snacks.util.color 'Constant' }
+            end,
+          },
+          {
+            function()
+              return '  ' .. require('dap').status()
+            end,
+            cond = function()
+              return package.loaded['dap'] and require('dap').status() ~= ''
+            end,
+            color = function()
+              return { fg = Snacks.util.color 'Debug' }
+            end,
           },
           {
             require('lazy.status').updates,
             cond = require('lazy.status').has_updates,
+            color = function()
+              return { fg = Snacks.util.color 'Special' }
+            end,
           },
         },
         -- NOTE: This section needs some improvements
