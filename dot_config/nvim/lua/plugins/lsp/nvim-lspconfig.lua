@@ -57,58 +57,21 @@ return { -- LSP Configuration & Plugins
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
-        local which_key = require 'which-key'
-        local telescope_builtin = require 'telescope.builtin'
-        local lsp_mapping = require('utils').lsp_mapping
+        local map = require('utils').buffer_keymap_setter(event.buf)
 
-        -- LSP mappings
-        which_key.add({
-          -- NOTE: LSP mappings
+        -- NOTE: LSP mappings
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          lsp_mapping('gd', telescope_builtin.lsp_definitions, '[G]oto [D]efinitions'),
-          --
-          -- Jump to the DECLARATION of the word under your cursor.
-          --  For example, in C this would take you to the header.
-          lsp_mapping('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration'),
+        -- Rename the variable under your cursor.
+        --  Most Language Servers support renaming across files, etc.
+        map('n', 'grn', vim.lsp.buf.rename, 'LSP: Re[n]ame')
 
-          -- Find references for the word under your cursor.
-          lsp_mapping('gr', telescope_builtin.lsp_references, '[G]oto [R]eferences'),
+        -- Execute a code action, usually your cursor needs to be on top of an error
+        --  or a suggestion from your LSP for this to activate.
+        map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, 'LSP: Code [A]ction')
 
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          lsp_mapping('gI', telescope_builtin.lsp_implementations, '[G]oto [I]mplementations'),
-
-          -- Opens a popup that displays documentation about the word under your cursor
-          --  See `:help K` for why this keymap.
-          --  or a suggestion from your LSP for this to activate.
-          lsp_mapping('K', vim.lsp.buf.hover, 'Documentation'),
-
-          -- NOTE: Code mappings
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          --  or a suggestion from your LSP for this to activate.
-          { '<leader>ca', vim.lsp.buf.code_action, desc = '[A]ctions' },
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          { '<leader>ct', telescope_builtin.lsp_type_definitions, desc = '[T]ype Definition' },
-
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          { '<leader>cr', vim.lsp.buf.rename, desc = '[R]ename' },
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          { '<leader>cs', telescope_builtin.lsp_dynamic_workspace_symbols, desc = 'Workspace [S]ymbols' },
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          { '<leader>cS', telescope_builtin.lsp_document_symbols, desc = 'Document [S]ymbols' },
-        }, { mode = 'n', buffer = event.buf })
+        -- Jump to the DECLARATION of the word under your cursor.
+        --  For example, in C this would take you to the header.
+        map('n', 'grD', vim.lsp.buf.declaration, 'LSP: [D]eclaration')
 
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
@@ -221,6 +184,7 @@ return { -- LSP Configuration & Plugins
       -- ts_ls = {},
       --
 
+      -- TODO: Do I still need this after using lazydev.nvim?
       -- Lua
       lua_ls = {
         -- cmd = {...},
@@ -251,6 +215,11 @@ return { -- LSP Configuration & Plugins
               tagSupport = {
                 valueSet = { 2 },
               },
+            },
+          },
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
             },
           },
         },

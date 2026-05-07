@@ -1,8 +1,7 @@
 -- TODO: Search relative to open buffer
 --  Use `require('telescope.utils').buffer_dir()` for `cwd` on `live_grep` and etc.
 
-return {
-  -- Fuzzy Finder (files, lsp, etc)
+return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   event = 'VimEnter',
   dependencies = {
@@ -45,9 +44,6 @@ return {
     -- Telescope picker. This is really useful to discover what Telescope can
     -- do as well as how to actually do it!
 
-    -- [[ Configure Telescope ]]
-    -- See `:help telescope` and `:help telescope.setup()`
-    --
     local builtin = require 'telescope.builtin'
     local actions = require 'telescope.actions'
     local actions_state = require 'telescope.actions.state'
@@ -81,6 +77,8 @@ return {
       end, 100) -- Delay allows filetype and plugins to settle before opening
     end
 
+    -- [[ Configure Telescope ]]
+    -- See `:help telescope` and `:help telescope.setup()`
     require('telescope').setup {
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
@@ -138,6 +136,42 @@ return {
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
     pcall(require('telescope').load_extension, 'noice')
+
+    -- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
+    -- it is better explained there). This allows easily switching between pickers if you prefer using something else!
+    vim.api.nvim_create_autocmd('LspAttach', {
+      group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
+      callback = function(event)
+        local map = require('utils').buffer_keymap_setter(event.buf)
+
+        -- NOTE: LSP mappings
+
+        -- Find references for the word under your cursor.
+        map('n', 'grr', builtin.lsp_references, 'LSP: [R]eferences')
+
+        -- Jump to the implementation of the word under your cursor.
+        --  Useful when your language has ways of declaring types without an actual implementation.
+        map('n', 'gri', builtin.lsp_implementations, 'LSP: [I]mplementation')
+
+        -- Jump to the definition of the word under your cursor.
+        --  This is where a variable was first declared, or where a function is defined, etc.
+        --  To jump back, press <C-t>.
+        map('n', 'grd', builtin.lsp_definitions, 'LSP: [D]efinition')
+
+        -- Jump to the type of the word under your cursor.
+        --  Useful when you're not sure what type a variable is and you want to see
+        --  the definition of its *type*, not where it was *defined*.
+        map('n', 'grt', builtin.lsp_type_definitions, 'LSP: [T]ype Definition')
+
+        -- Fuzzy find all the symbols in your current document.
+        --  Symbols are things like variables, functions, types, etc.
+        map('n', 'gO', builtin.lsp_document_symbols, 'LSP: Document Symbols')
+
+        -- Fuzzy find all the symbols in your current workspace.
+        --  Similar to document symbols, except searches over your entire project.
+        map('n', 'gW', builtin.lsp_dynamic_workspace_symbols, 'LSP: [W]orkspace Symbols')
+      end,
+    })
 
     -- Find directory and focus in Nvim-tree
     -- NOTE: Needs fd to be installed (https://github.com/sharkdp/fd)

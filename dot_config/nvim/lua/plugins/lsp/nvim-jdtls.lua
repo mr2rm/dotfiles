@@ -87,26 +87,25 @@ return {
 
         local which_key = require 'which-key'
         local jdtls = require 'jdtls'
-        local lsp_mapping = require('utils').lsp_mapping
+        local map = require('utils').buffer_keymap_setter(event.buf)
 
         -- TODO: Merge normal and visual mode mappings
         --  https://github.com/folke/which-key.nvim?tab=readme-ov-file#%EF%B8%8F-mappings
 
-        -- Normal mode mappings
-        which_key.add({
-          -- NOTE: LSP mappings
-          lsp_mapping('gs', jdtls.super_implementation, '[G]oto [S]uper'),
-          lsp_mapping('gS', require('jdtls.tests').goto_subjects, '[G]oto [S]ubjects'),
+        -- NOTE: LSP mappings
+        map('n', 'grs', jdtls.super_implementation, 'LSP: [S]uper')
+        map('n', 'grS', require('jdtls.tests').goto_subjects, 'LSP: [S]ubjects')
 
-          -- NOTE: Code mappings
+        -- NOTE: Code mappings
+
+        which_key.add({ -- Normal mode mappings
           { '<leader>cx', name = '+E[x]tract' },
           { '<leader>cxv', jdtls.extract_variable_all, desc = 'Extract [V]ariable' },
           { '<leader>cxc', jdtls.extract_constant, desc = 'Extract [C]onstant' },
           { '<leader>co', jdtls.organize_imports, desc = '[O]rganize Imports' },
         }, { mode = 'n', buffer = event.buf })
 
-        -- Visual mode mappings
-        which_key.add({
+        which_key.add({ -- Visual mode mappings
           { '<leader>c', name = '+[C]ode' },
           { '<leader>cx', name = '+E[x]tract' },
           { '<leader>cxm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], desc = 'Extract [M]ethod' },
