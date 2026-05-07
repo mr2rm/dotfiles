@@ -32,3 +32,16 @@ vim.keymap.set('n', '<leader>ks', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left>
 vim.keymap.set('n', '<leader>ky', '"+y', { desc = '[Y]ank to System Clipboard' })
 vim.keymap.set('v', '<leader>ky', '"+y', { desc = '[Y]ank to System Clipboard' })
 vim.keymap.set('n', '<leader>kY', '"+Y', { desc = '[Y]ank Rest to System Clipboard' })
+
+-- NOTE: Incremental selection with Treesitter
+-- FIXME: No public API for now (https://github.com/neovim/neovim/issues/38211)
+local treesitter_select = require 'vim.treesitter._select'
+vim.keymap.set('n', '<C-Space>', function()
+  treesitter_select.select_parent(vim.v.count1)
+end)
+vim.keymap.set('x', '<C-Space>', function()
+  treesitter_select.select_parent(vim.v.count1)
+end)
+vim.keymap.set('x', '<BS>', function()
+  treesitter_select.select_child(vim.v.count1)
+end)
