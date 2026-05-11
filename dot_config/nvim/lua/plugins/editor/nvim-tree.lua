@@ -59,10 +59,7 @@ return { -- File explorer
     vim.api.nvim_create_autocmd('BufEnter', {
       callback = function()
         if vim.bo.filetype == 'NvimTree' then
-          require('ufo').detach()
-          vim.opt_local.foldenable = false
-          vim.opt_local.foldcolumn = '0'
-          vim.opt_local.statuscolumn = ''
+          require('utils').disable_fold_and_statuscolumn()
         end
       end,
     })
